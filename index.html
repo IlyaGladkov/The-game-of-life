@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>life</title>
+    <canvas id="canvas" width="500" height="500">
+
+<body>
+
+    <script>
+        const FIELD_SIZE = 500;
+        const CELL_SIZE = 10;
+
+        var mas = [];
+
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(0, 0, FIELD_SIZE, FIELD_SIZE);
+
+        ctx.beginPath();
+        for (var Y_FIELD = 0; Y_FIELD < FIELD_SIZE; Y_FIELD += CELL_SIZE) {
+            ctx.moveTo(0, Y_FIELD);
+            ctx.lineTo(FIELD_SIZE, Y_FIELD);
+        }
+        ctx.stroke();
+
+        ctx.beginPath();
+        for (var X_FIELD = 0; X_FIELD < FIELD_SIZE; X_FIELD += CELL_SIZE) {
+            ctx.moveTo(X_FIELD, 0);
+            ctx.lineTo(X_FIELD, FIELD_SIZE);
+        }
+        ctx.stroke();
+
+        for (let i = 0; i < 50; i++) {
+            mas[i] = [];
+            for (let j = 0; j < 50; j++) {
+                mas[i][j] = false;
+            }
+        }
+
+        canvas.onclick = function (event) {
+            var x = event.offsetX;
+            var y = event.offsetY;
+            let col = Math.floor(x / CELL_SIZE)
+            let row = Math.floor(y / CELL_SIZE)
+
+            if (mas[row][col] == false) {
+                ctx.fillStyle = "green";
+                ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                mas[row][col] = true;
+            } else {
+                ctx.fillStyle = "white";
+                ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            }
+        }
+
+        function goLife() {
+            for (let i = 0; i < 50; i++) {
+                for (let j = 0; j < 50; j++) {
+
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
