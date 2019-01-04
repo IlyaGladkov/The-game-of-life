@@ -40,21 +40,49 @@
             }
         }
 
-        canvas.onclick = function (event) {
-            var x = event.offsetX;
-            var y = event.offsetY;
-            let col = Math.floor(x / CELL_SIZE)
-            let row = Math.floor(y / CELL_SIZE)
+            canvas.onclick = function (event) {
+                var x = event.offsetX;
+                var y = event.offsetY;
+                let col = Math.floor(x / CELL_SIZE)
+                let row = Math.floor(y / CELL_SIZE)
 
-            if (mas[row][col] == false) {
-                ctx.fillStyle = "green";
-                ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                mas[row][col] = true;
-            } else {
-                ctx.fillStyle = "white";
-                ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                if (mas[row][col] == false) {
+                    ctx.fillStyle = "green";
+                    ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    mas[row][col] = true;
+                } else {
+                    ctx.fillStyle = "white";
+                    ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                }
             }
+
+        function count() {
+            mas.forEach(function (item, row) {
+                item.forEach(function (cell, col) {
+                    if (cell == true) {
+                        let neighbors = 0;
+                        if (cell[row - 1][col - 1] == true) {
+                            neighbors++;
+                        } else if (cell[row][col - 1] == true) {
+                            neighbors++;
+                        } else if (cell[row + 1][col - 1] == true) {
+                            neighbors++;
+                        } else if (cell[row - 1][col] == true) {
+                            neighbors++;
+                        } else if (cell[row + 1][col] == true) {
+                            neighbors++;
+                        } else if (cell[row - 1][col + 1] == true) {
+                            neighbors++;
+                        } else if (cell[row][col + 1] == true) {
+                            neighbors++;
+                        } else if (cell[row + 1][col + 1] == true) {
+                            neighbors++;
+                        }
+                    }
+                });
+            });
         }
+        count();
     </script>
 </body>
 
