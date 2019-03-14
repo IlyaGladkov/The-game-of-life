@@ -4,6 +4,8 @@
 <head>
     <title>life</title>
     <canvas id="canvas" width="500" height="500">
+    </canvas>
+</head>
 
 <body>
 
@@ -55,26 +57,50 @@
                 ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 mas[row][col] = false;
             }
+            console.log(row, col);
         }
 
         function count(row, col) {
             var neighbors = 0;
-            if (mas[row - 1][col - 1] == true) {
-                neighbors++;
-            } else if (mas[row][col - 1] == true) {
-                neighbors++;
-            } else if (mas[row + 1][col - 1] == true) {
-                neighbors++;
-            } else if (mas[row - 1][col] == true) {
-                neighbors++;
-            } else if (mas[row + 1][col] == true) {
-                neighbors++;
-            } else if (mas[row - 1][col + 1] == true) {
-                neighbors++;
-            } else if (mas[row][col + 1] == true) {
-                neighbors++;
-            } else if (mas[row + 1][col + 1] == true) {
-                neighbors++;
+            if (row != 0 && col != 0) {
+                if (mas[row - 1][col - 1] == true) {
+                    neighbors++;
+                }
+            }
+            if (row > 0 && col != 0) {
+                if (mas[row][col - 1] == true) {
+                    neighbors++;
+                }
+            }
+            if (row != 49 && col != 0) {
+                if (mas[row + 1][col - 1] == true) {
+                    neighbors++;
+                }
+            }
+            if (row != 0 && col > 0) {
+                if (mas[row - 1][col] == true) {
+                    neighbors++;
+                }
+            }
+            if (row != 49 && col > 0) {
+                if (mas[row + 1][col] == true) {
+                    neighbors++;
+                }
+            }
+            if (row != 0 && col != 49) {
+                if (mas[row - 1][col + 1] == true) {
+                    neighbors++;
+                }
+            }
+            if (row > 0 && col != 49) {
+                if (mas[row][col + 1] == true) {
+                    neighbors++;
+                }
+            }
+            if (row != 49 && col != 49) {
+                if (mas[row + 1][col + 1] == true) {
+                    neighbors++;
+                }
             }
             return neighbors;
         }
@@ -82,11 +108,15 @@
         function goLife() {
             mas.forEach(function (item, row) {
                 item.forEach(function (cell, col) {
-                    if (count(row, col) = 3) {
+                    if (count(row, col) == 3) {
                         ctx.fillStyle = "green";
                         ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                         mas[row][col] = true;
-                    } else if (count(row, col) = 2 || count(row, col) > 3) {
+                    } else if (count(row, col) == 2 || count(row, col) > 3) {
+                        ctx.fillStyle = "white";
+                        ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                        mas[row][col] = false;
+                    } else {
                         ctx.fillStyle = "white";
                         ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                         mas[row][col] = false;
@@ -95,7 +125,7 @@
             })
         }
 
-        setInterval(goLife, 1000);
+        setInterval(goLife, 100);
 
     </script>
 </body>
