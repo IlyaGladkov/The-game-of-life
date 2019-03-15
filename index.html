@@ -43,6 +43,14 @@
             }
         }
 
+        for (let i = 0; i < 1000; i++) {
+            let rnd1 = Math.floor(Math.random() * (50));
+            let rnd2 = Math.floor(Math.random() * (50));
+            ctx.fillStyle = "green";
+            ctx.fillRect(rnd1 * CELL_SIZE, rnd2 * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            mas[rnd1][rnd2] = true;
+        }
+
         canvas.onclick = function (event) {
             var x = event.offsetX;
             var y = event.offsetY;
@@ -62,37 +70,37 @@
 
         function count(row, col) {
             var neighbors = 0;
-            if (row != 0 && col != 0) {
+            if (row > 0 && col > 0) {
                 if (mas[row - 1][col - 1] == true) {
                     neighbors++;
                 }
             }
-            if (row > 0 && col != 0) {
+            if (row >= 0 && col > 0) {
                 if (mas[row][col - 1] == true) {
                     neighbors++;
                 }
             }
-            if (row != lastCell && col != 0) {
+            if (row != lastCell && col > 0) {
                 if (mas[row + 1][col - 1] == true) {
                     neighbors++;
                 }
             }
-            if (row != 0 && col > 0) {
+            if (row > 0 && col >= 0) {
                 if (mas[row - 1][col] == true) {
                     neighbors++;
                 }
             }
-            if (row != lastCell && col > 0) {
+            if (row != lastCell && col >= 0) {
                 if (mas[row + 1][col] == true) {
                     neighbors++;
                 }
             }
-            if (row != 0 && col != lastCell) {
+            if (row > 0 && col != lastCell) {
                 if (mas[row - 1][col + 1] == true) {
                     neighbors++;
                 }
             }
-            if (row > 0 && col != lastCell) {
+            if (row >= 0 && col != lastCell) {
                 if (mas[row][col + 1] == true) {
                     neighbors++;
                 }
@@ -108,25 +116,21 @@
         function goLife() {
             mas.forEach(function (item, row) {
                 item.forEach(function (cell, col) {
-                    if (mas[row][col] == false) {
-                        if (count(row, col) == 3) {
-                            ctx.fillStyle = "green";
-                            ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                            mas[row][col] = true;
-                        }
+                    if (count(row, col) == 3) {
+                        ctx.fillStyle = "green";
+                        ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                        mas[row][col] = true;
                     }
-                    if (mas[row][col] == true) {
-                        if (count(row, col) <= 1 || count(row, col) >= 4) {
-                            ctx.fillStyle = "white";
-                            ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                            mas[row][col] = false;
-                        }
+                    if (count(row, col) < 2 || count(row, col) > 3) {
+                        ctx.fillStyle = "white";
+                        ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                        mas[row][col] = false;
                     }
                 })
             })
         }
 
-        setInterval(goLife, 1000);
+        setInterval(goLife, 50);
 
     </script>
 </body>
