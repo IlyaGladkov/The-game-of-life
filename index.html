@@ -12,6 +12,7 @@
     <script>
         const FIELD_SIZE = 500;
         const CELL_SIZE = 10;
+        const lastCell = 49;
 
         var mas = [];
 
@@ -57,7 +58,6 @@
                 ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 mas[row][col] = false;
             }
-            console.log(row, col);
         }
 
         function count(row, col) {
@@ -72,7 +72,7 @@
                     neighbors++;
                 }
             }
-            if (row != 49 && col != 0) {
+            if (row != lastCell && col != 0) {
                 if (mas[row + 1][col - 1] == true) {
                     neighbors++;
                 }
@@ -82,22 +82,22 @@
                     neighbors++;
                 }
             }
-            if (row != 49 && col > 0) {
+            if (row != lastCell && col > 0) {
                 if (mas[row + 1][col] == true) {
                     neighbors++;
                 }
             }
-            if (row != 0 && col != 49) {
+            if (row != 0 && col != lastCell) {
                 if (mas[row - 1][col + 1] == true) {
                     neighbors++;
                 }
             }
-            if (row > 0 && col != 49) {
+            if (row > 0 && col != lastCell) {
                 if (mas[row][col + 1] == true) {
                     neighbors++;
                 }
             }
-            if (row != 49 && col != 49) {
+            if (row != lastCell && col != lastCell) {
                 if (mas[row + 1][col + 1] == true) {
                     neighbors++;
                 }
@@ -108,24 +108,25 @@
         function goLife() {
             mas.forEach(function (item, row) {
                 item.forEach(function (cell, col) {
-                    if (count(row, col) == 3) {
-                        ctx.fillStyle = "green";
-                        ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                        mas[row][col] = true;
-                    } else if (count(row, col) == 2 || count(row, col) > 3) {
-                        ctx.fillStyle = "white";
-                        ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                        mas[row][col] = false;
-                    } else {
-                        ctx.fillStyle = "white";
-                        ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                        mas[row][col] = false;
+                    if (mas[row][col] == false) {
+                        if (count(row, col) == 3) {
+                            ctx.fillStyle = "green";
+                            ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                            mas[row][col] = true;
+                        }
+                    }
+                    if (mas[row][col] == true) {
+                        if (count(row, col) <= 1 || count(row, col) >= 4) {
+                            ctx.fillStyle = "white";
+                            ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                            mas[row][col] = false;
+                        }
                     }
                 })
             })
         }
 
-        setInterval(goLife, 100);
+        setInterval(goLife, 1000);
 
     </script>
 </body>
