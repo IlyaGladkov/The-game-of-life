@@ -75,7 +75,7 @@
                     neighbors++;
                 }
             }
-            if (row >= 0 && col > 0) {
+            if (col > 0) {
                 if (mas[row][col - 1] == true) {
                     neighbors++;
                 }
@@ -85,12 +85,12 @@
                     neighbors++;
                 }
             }
-            if (row > 0 && col >= 0) {
+            if (row > 0) {
                 if (mas[row - 1][col] == true) {
                     neighbors++;
                 }
             }
-            if (row != lastCell && col >= 0) {
+            if (row != lastCell) {
                 if (mas[row + 1][col] == true) {
                     neighbors++;
                 }
@@ -100,7 +100,7 @@
                     neighbors++;
                 }
             }
-            if (row >= 0 && col != lastCell) {
+            if (col != lastCell) {
                 if (mas[row][col + 1] == true) {
                     neighbors++;
                 }
