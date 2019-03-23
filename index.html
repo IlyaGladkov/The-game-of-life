@@ -9,12 +9,17 @@
 
 <body>
 
+    <form>
+        <input type="button" id="startGame" value="Start">
+    </form>
+
     <script>
         const FIELD_SIZE = 500;
         const CELL_SIZE = 10;
         const lastCell = 49;
 
         var mas = [];
+        var mas2 = []
 
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
@@ -43,12 +48,11 @@
             }
         }
 
-        for (let i = 0; i < 1000; i++) {
-            let rnd1 = Math.floor(Math.random() * (50));
-            let rnd2 = Math.floor(Math.random() * (50));
-            ctx.fillStyle = "green";
-            ctx.fillRect(rnd1 * CELL_SIZE, rnd2 * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-            mas[rnd1][rnd2] = true;
+        for (let i = 0; i < 50; i++) {
+            mas2[i] = [];
+            for (let j = 0; j < 50; j++) {
+                mas2[i][j] = false;
+            }
         }
 
         canvas.onclick = function (event) {
@@ -113,24 +117,39 @@
             return neighbors;
         }
 
+        mas.forEach(function (item, row) {
+            item.forEach(function (cell, col) {
+                mas2[row][col] = mas[row][col];
+            })
+        })
+
         function goLife() {
             mas.forEach(function (item, row) {
                 item.forEach(function (cell, col) {
-                    if (count(row, col) == 3) {
-                        ctx.fillStyle = "green";
-                        ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                        mas[row][col] = true;
-                    }
-                    if (count(row, col) < 2 || count(row, col) > 3) {
-                        ctx.fillStyle = "white";
-                        ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                        mas[row][col] = false;
+                    if (mas[row][col] == false) {
+                        if (count(row, col) == 3) {
+                            ctx.fillStyle = "green";
+                            ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                            mas2[row][col] = true;
+                        }
+                    } else {
+                        if (count(row, col) == 2) {
+                            mas2[row][col] = true;
+                        }
+                        if (count(row, col) < 2 || count(row, col) > 3) {
+                            ctx.fillStyle = "white";
+                            ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                            mas2[row][col] = false;
+                        }
                     }
                 })
             })
         }
 
-        setInterval(goLife, 50);
+        play = document.getElementById("startGame");
+        play.onclick = function () {
+            setInterval(goLife, 100);
+        }
 
     </script>
 </body>
