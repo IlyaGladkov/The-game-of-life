@@ -51,7 +51,7 @@
         for (let i = 0; i < 50; i++) {
             mas2[i] = [];
             for (let j = 0; j < 50; j++) {
-                mas2[i][j] = false;
+                mas2[i][j] = undefined;
             }
         }
 
@@ -70,6 +70,14 @@
                 ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 mas[row][col] = false;
             }
+        }
+
+        for (let i = 0; i < 1000; i++) {
+            let rnd1 = Math.floor(Math.random() * (50));
+            let rnd2 = Math.floor(Math.random() * (50));
+            ctx.fillStyle = "green";
+            ctx.fillRect(rnd1 * CELL_SIZE, rnd2 * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            mas[rnd1][rnd2] = true;
         }
 
         function count(row, col) {
@@ -117,16 +125,11 @@
             return neighbors;
         }
 
-        mas.forEach(function (item, row) {
-            item.forEach(function (cell, col) {
-                mas2[row][col] = mas[row][col];
-            })
-        })
-
         function goLife() {
             mas.forEach(function (item, row) {
                 item.forEach(function (cell, col) {
-                    if (mas[row][col] == false) {
+                    mas2[row][col] = mas[row][col];
+                    if (mas2[row][col] == false) {
                         if (count(row, col) == 3) {
                             ctx.fillStyle = "green";
                             ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
@@ -142,6 +145,11 @@
                             mas2[row][col] = false;
                         }
                     }
+                })
+            })
+            mas2.forEach(function (item, row) {
+                item.forEach(function (cell, col) {
+                    mas[row][col] = mas2[row][col]
                 })
             })
         }
