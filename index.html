@@ -9,6 +9,7 @@
 
 <body>
 
+    <br>
     <button id="start">Start</button>
     <button id="pause">Pause</button>
 
@@ -127,7 +128,6 @@
         function goLife() {
             mas.forEach(function (item, row) {
                 item.forEach(function (cell, col) {
-                    mas2[row][col] = mas[row][col];
                     if (mas2[row][col] == false) {
                         if (count(row, col) == 3) {
                             ctx.fillStyle = "green";
