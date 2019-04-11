@@ -9,9 +9,8 @@
 
 <body>
 
-    <form>
-        <input type="button" id="startGame" value="Start">
-    </form>
+    <button id="start">Start</button>
+    <button id="pause">Pause</button>
 
     <script>
         const FIELD_SIZE = 500;
@@ -154,9 +153,12 @@
             })
         }
 
-        play = document.getElementById("startGame");
-        play.onclick = function () {
-            setInterval(goLife, 100);
+        start.onclick = function () {
+            var str = setInterval(goLife, 100);
+        }
+
+        pause.onclick = function () {
+            clearInterval(str);
         }
 
     </script>
