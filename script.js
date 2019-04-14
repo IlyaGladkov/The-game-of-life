@@ -53,8 +53,8 @@ for (let i = 0; i < 50; i++) {
 canvas.onclick = function (event) {
     let x = event.offsetX;
     let y = event.offsetY;
-    var col = Math.floor(x / SQUARE_SIZE)
-    var row = Math.floor(y / SQUARE_SIZE)
+    var col = Math.floor(x / CELL_SIZE)
+    var row = Math.floor(y / CELL_SIZE)
 
     if (mas[row][col] == false) {
         drawGreen(col, row);
