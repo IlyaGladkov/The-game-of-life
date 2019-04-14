@@ -1,7 +1,7 @@
 const FIELD_SIZE = 500;
-const CELL_SIZE = 9;
+const DRAW_CELL_SIZE = 9;
 const lastCell = 49;
-const SQUARE_SIZE = 10;
+const CELL_SIZE = 10;
 
 var mas = [];
 var mas2 = []
@@ -13,18 +13,28 @@ ctx.strokeStyle = "black";
 ctx.strokeRect(0, 0, FIELD_SIZE + 0.5, FIELD_SIZE + 0.5);
 
 ctx.beginPath();
-for (var Y_FIELD = 0; Y_FIELD < FIELD_SIZE; Y_FIELD += SQUARE_SIZE) {
+for (var Y_FIELD = 0; Y_FIELD < FIELD_SIZE; Y_FIELD += CELL_SIZE) {
     ctx.moveTo(0, Y_FIELD);
     ctx.lineTo(FIELD_SIZE, Y_FIELD);
 }
 ctx.stroke();
 
 ctx.beginPath();
-for (var X_FIELD = 0; X_FIELD < FIELD_SIZE; X_FIELD += SQUARE_SIZE) {
+for (var X_FIELD = 0; X_FIELD < FIELD_SIZE; X_FIELD += CELL_SIZE) {
     ctx.moveTo(X_FIELD, 0);
     ctx.lineTo(X_FIELD, FIELD_SIZE);
 }
 ctx.stroke();
+
+function drawGreen(col, row) {
+    ctx.fillStyle = "green";
+    ctx.fillRect(col * CELL_SIZE + 1, row * CELL_SIZE + 1, DRAW_CELL_SIZE, DRAW_CELL_SIZE);
+}
+
+function drawWhite(col, row) {
+    ctx.fillStyle = "white";
+    ctx.fillRect(col * CELL_SIZE + 1, row * CELL_SIZE + 1, DRAW_CELL_SIZE, DRAW_CELL_SIZE);
+}
 
 for (let i = 0; i < 50; i++) {
     mas[i] = [];
@@ -41,28 +51,25 @@ for (let i = 0; i < 50; i++) {
 }
 
 canvas.onclick = function (event) {
-    var x = event.offsetX;
-    var y = event.offsetY;
+    let x = event.offsetX;
+    let y = event.offsetY;
     var col = Math.floor(x / SQUARE_SIZE)
     var row = Math.floor(y / SQUARE_SIZE)
 
     if (mas[row][col] == false) {
-        ctx.fillStyle = "green";
-        ctx.fillRect((col * SQUARE_SIZE) + 1, (row * SQUARE_SIZE) + 1, CELL_SIZE, CELL_SIZE);
+        drawGreen(col, row);
         mas[row][col] = true;
     } else {
-        ctx.fillStyle = "white";
-        ctx.fillRect((col * SQUARE_SIZE) + 1, (row * SQUARE_SIZE) + 1, CELL_SIZE, CELL_SIZE);
+        drawWhite(col, row);
         mas[row][col] = false;
     }
 }
 
 for (let i = 0; i < 1000; i++) {
-    let rnd1 = Math.floor(Math.random() * (50));
-    let rnd2 = Math.floor(Math.random() * (50));
-    ctx.fillStyle = "green";
-    ctx.fillRect(rnd1 * SQUARE_SIZE + 1, rnd2 * SQUARE_SIZE + 1, CELL_SIZE, CELL_SIZE);
-    mas[rnd1][rnd2] = true;
+    let row = Math.floor(Math.random() * (50));
+    let col = Math.floor(Math.random() * (50));
+    drawGreen(col, row);
+    mas[row][col] = true;
 }
 
 function count(row, col) {
@@ -113,10 +120,10 @@ function count(row, col) {
 function goLife() {
     mas.forEach(function (item, row) {
         item.forEach(function (cell, col) {
+            mas2[row][col] = mas[row][col];
             if (mas2[row][col] == false) {
                 if (count(row, col) == 3) {
-                    ctx.fillStyle = "green";
-                    ctx.fillRect((col * SQUARE_SIZE) + 1, (row * SQUARE_SIZE) + 1, CELL_SIZE, CELL_SIZE);
+                    drawGreen(col, row);
                     mas2[row][col] = true;
                 }
             } else {
@@ -124,8 +131,7 @@ function goLife() {
                     mas2[row][col] = true;
                 }
                 if (count(row, col) < 2 || count(row, col) > 3) {
-                    ctx.fillStyle = "white";
-                    ctx.fillRect((col * SQUARE_SIZE) + 1, (row * SQUARE_SIZE) + 1, CELL_SIZE, CELL_SIZE);
+                    drawWhite(col, row);
                     mas2[row][col] = false;
                 }
             }
@@ -139,7 +145,7 @@ function goLife() {
 }
 
 str = function () {
-   startGame = setInterval(goLife, 100);
+    startGame = setInterval(goLife, 100);
 }
 
 pse = function () {
