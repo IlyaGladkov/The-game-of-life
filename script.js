@@ -26,13 +26,8 @@ for (var X_FIELD = 0; X_FIELD < FIELD_SIZE; X_FIELD += CELL_SIZE) {
 }
 ctx.stroke();
 
-function drawGreen(col, row) {
-    ctx.fillStyle = "green";
-    ctx.fillRect(col * CELL_SIZE + 1, row * CELL_SIZE + 1, DRAW_CELL_SIZE, DRAW_CELL_SIZE);
-}
-
-function drawWhite(col, row) {
-    ctx.fillStyle = "white";
+function drawCell(col, row, color) {
+    ctx.fillStyle = color;
     ctx.fillRect(col * CELL_SIZE + 1, row * CELL_SIZE + 1, DRAW_CELL_SIZE, DRAW_CELL_SIZE);
 }
 
@@ -57,10 +52,10 @@ canvas.onclick = function (event) {
     var row = Math.floor(y / CELL_SIZE)
 
     if (mas[row][col] == false) {
-        drawGreen(col, row);
+        drawCell(col, row, "green");
         mas[row][col] = true;
     } else {
-        drawWhite(col, row);
+        drawCell(col, row, "white");
         mas[row][col] = false;
     }
 }
@@ -68,7 +63,7 @@ canvas.onclick = function (event) {
 for (let i = 0; i < 1000; i++) {
     let row = Math.floor(Math.random() * (50));
     let col = Math.floor(Math.random() * (50));
-    drawGreen(col, row);
+    drawCell(col, row, "green");
     mas[row][col] = true;
 }
 
@@ -123,7 +118,7 @@ function goLife() {
             mas2[row][col] = mas[row][col];
             if (mas2[row][col] == false) {
                 if (count(row, col) == 3) {
-                    drawGreen(col, row);
+                    drawCell(col, row, "green");
                     mas2[row][col] = true;
                 }
             } else {
@@ -131,7 +126,7 @@ function goLife() {
                     mas2[row][col] = true;
                 }
                 if (count(row, col) < 2 || count(row, col) > 3) {
-                    drawWhite(col, row);
+                    drawCell(col, row, "white");
                     mas2[row][col] = false;
                 }
             }
@@ -144,10 +139,18 @@ function goLife() {
     })
 }
 
-str = function () {
+function str() {
     startGame = setInterval(goLife, 100);
+    document.getElementById("start").disabled = true;
+    document.getElementById("stepOne").disabled = true;
 }
 
-pse = function () {
+function pse() {
     clearInterval(startGame);
+    document.getElementById("start").disabled = false;
+    document.getElementById("stepOne").disabled = false;
+}
+
+function step() {
+    goLife();
 }
