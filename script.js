@@ -112,6 +112,8 @@ function count(row, col) {
     return neighbors;
 }
 
+var generation = 0;
+
 function goLife() {
     mas.forEach(function (item, row) {
         item.forEach(function (cell, col) {
@@ -132,23 +134,23 @@ function goLife() {
             }
         })
     })
+    generation += 1;
     mas2.forEach(function (item, row) {
         item.forEach(function (cell, col) {
             mas[row][col] = mas2[row][col]
         })
     })
+    document.getElementsByTagName("h3")[0].innerText = "Generation: " + generation;
 }
 
 function str() {
     startGame = setInterval(goLife, 100);
     document.getElementById("start").disabled = true;
-    document.getElementById("stepOne").disabled = true;
 }
 
 function pse() {
     clearInterval(startGame);
     document.getElementById("start").disabled = false;
-    document.getElementById("stepOne").disabled = false;
 }
 
 function step() {
