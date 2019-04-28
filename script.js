@@ -3,9 +3,6 @@ const DRAW_CELL_SIZE = 9;
 const lastCell = 49;
 const CELL_SIZE = 10;
 
-var mas = [];
-var mas2 = []
-
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
@@ -31,19 +28,19 @@ function drawCell(col, row, color) {
     ctx.fillRect(col * CELL_SIZE + 1, row * CELL_SIZE + 1, DRAW_CELL_SIZE, DRAW_CELL_SIZE);
 }
 
-for (let i = 0; i < 50; i++) {
-    mas[i] = [];
-    for (let j = 0; j < 50; j++) {
-        mas[i][j] = false;
+function makeMatrix(sizeI, sizeJ, value) {
+    let matrix = [];
+    for (let i = 0; i < sizeI; i++) {
+        matrix[i] = []
+        for (let j = 0; j < sizeJ; j++) {
+            matrix[i][j] = value;
+        }
     }
+    return matrix;
 }
 
-for (let i = 0; i < 50; i++) {
-    mas2[i] = [];
-    for (let j = 0; j < 50; j++) {
-        mas2[i][j] = undefined;
-    }
-}
+var mas = makeMatrix(50, 50, false);
+var mas2 = makeMatrix(50, 50, undefined)
 
 canvas.onclick = function (event) {
     let x = event.offsetX;
@@ -61,8 +58,8 @@ canvas.onclick = function (event) {
 }
 
 for (let i = 0; i < 1000; i++) {
-    let row = Math.floor(Math.random() * (50));
-    let col = Math.floor(Math.random() * (50));
+    let row = Math.floor(Math.random() * 50);
+    let col = Math.floor(Math.random() * 50);
     drawCell(col, row, "green");
     mas[row][col] = true;
 }
