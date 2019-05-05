@@ -1,7 +1,7 @@
 const FIELD_SIZE = 500;
 const DRAW_CELL_SIZE = 9;
-const lastCell = 49;
 const CELL_SIZE = 10;
+const randomNumberOfCell = 1000;
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
@@ -28,16 +28,7 @@ function drawCell(col, row, color) {
     ctx.fillRect(col * CELL_SIZE + 1, row * CELL_SIZE + 1, DRAW_CELL_SIZE, DRAW_CELL_SIZE);
 }
 
-function makeMatrix(sizeI, sizeJ, value) {
-    let matrix = [];
-    for (let i = 0; i < sizeI; i++) {
-        matrix[i] = []
-        for (let j = 0; j < sizeJ; j++) {
-            matrix[i][j] = value;
-        }
-    }
-    return matrix;
-}
+import makeMatrix from './matrix.js'
 
 var mas = makeMatrix(50, 50, false);
 var mas2 = makeMatrix(50, 50, undefined)
@@ -57,7 +48,7 @@ canvas.onclick = function (event) {
     }
 }
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < randomNumberOfCell; i++) {
     let row = Math.floor(Math.random() * 50);
     let col = Math.floor(Math.random() * 50);
     drawCell(col, row, "green");
@@ -76,7 +67,7 @@ function count(row, col) {
             neighbors++;
         }
     }
-    if (row != lastCell && col > 0) {
+    if (row != 49 && col > 0) {
         if (mas[row + 1][col - 1] == true) {
             neighbors++;
         }
@@ -86,22 +77,22 @@ function count(row, col) {
             neighbors++;
         }
     }
-    if (row != lastCell) {
+    if (row != 49) {
         if (mas[row + 1][col] == true) {
             neighbors++;
         }
     }
-    if (row > 0 && col != lastCell) {
+    if (row > 0 && col != 49) {
         if (mas[row - 1][col + 1] == true) {
             neighbors++;
         }
     }
-    if (col != lastCell) {
+    if (col != 49) {
         if (mas[row][col + 1] == true) {
             neighbors++;
         }
     }
-    if (row != lastCell && col != lastCell) {
+    if (row != 49 && col != 49) {
         if (mas[row + 1][col + 1] == true) {
             neighbors++;
         }
@@ -140,16 +131,18 @@ function goLife() {
     document.getElementsByTagName("h3")[0].innerText = "Generation: " + generation;
 }
 
-function str() {
+var startGame;
+start.onclick = function () {
     startGame = setInterval(goLife, 100);
+    startGame;
     document.getElementById("start").disabled = true;
 }
 
-function pse() {
+pause.onclick = function () {
     clearInterval(startGame);
     document.getElementById("start").disabled = false;
 }
 
-function step() {
+step.onclick = function () {
     goLife();
-}
+} 
