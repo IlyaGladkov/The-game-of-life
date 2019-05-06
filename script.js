@@ -1,3 +1,5 @@
+import makeMatrix from './matrix.js'
+
 const FIELD_SIZE = 500;
 const DRAW_CELL_SIZE = 9;
 const CELL_SIZE = 10;
@@ -27,8 +29,6 @@ function drawCell(col, row, color) {
     ctx.fillStyle = color;
     ctx.fillRect(col * CELL_SIZE + 1, row * CELL_SIZE + 1, DRAW_CELL_SIZE, DRAW_CELL_SIZE);
 }
-
-import makeMatrix from './matrix.js'
 
 var mas = makeMatrix(50, 50, false);
 var mas2 = makeMatrix(50, 50, undefined)
