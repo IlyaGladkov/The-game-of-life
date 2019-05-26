@@ -1,4 +1,4 @@
-import makeMatrix from './matrix.js'
+import { initMatrix } from './matrix.js'
 
 const FIELD_SIZE = 500;
 const DRAW_CELL_SIZE = 9;
@@ -30,8 +30,8 @@ function drawCell(col, row, color) {
     ctx.fillRect(col * CELL_SIZE + 1, row * CELL_SIZE + 1, DRAW_CELL_SIZE, DRAW_CELL_SIZE);
 }
 
-var mas = makeMatrix(50, 50, false);
-var mas2 = makeMatrix(50, 50, undefined)
+var mas = initMatrix(50, 50, () => false);
+var mas2 = initMatrix(50, 50, () => undefined);
 
 canvas.onclick = function (event) {
     let x = event.offsetX;
@@ -145,4 +145,4 @@ pause.onclick = function () {
 
 step.onclick = function () {
     goLife();
-} 
+}

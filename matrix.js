@@ -1,10 +1,10 @@
-export default function makeMatrix(sizeI, sizeJ, value) {
-    let matrix = [];
+export function initMatrix(sizeI,sizeJ, anyFun) {
+    let initMatrix = [];
     for (let i = 0; i < sizeI; i++) {
-        matrix[i] = []
+        initMatrix[i] = []
         for (let j = 0; j < sizeJ; j++) {
-            matrix[i][j] = value;
+            initMatrix[i][j] = anyFun();
         }
     }
-    return matrix;
-}   
+    return initMatrix;
+}
