@@ -1,25 +1,26 @@
 import { initMatrix } from './matrix.js'
 
-const FIELD_SIZE = 50;
+const NUM_LINES = 50;
+const NUM_COLUMNS = 50;
 const CELL_SIZE = 10;
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
 ctx.strokeStyle = "black";
-ctx.strokeRect(0, 0, (FIELD_SIZE * CELL_SIZE) + 0.5, (FIELD_SIZE * CELL_SIZE) + 0.5);
+ctx.strokeRect(0, 0, (NUM_COLUMNS * CELL_SIZE) + 0.5, (NUM_LINES * CELL_SIZE) + 0.5);
 
 ctx.beginPath();
-for (var Y_FIELD = 0; Y_FIELD < (FIELD_SIZE * CELL_SIZE); Y_FIELD += CELL_SIZE) {
+for (var Y_FIELD = 0; Y_FIELD < (NUM_LINES * CELL_SIZE); Y_FIELD += CELL_SIZE) {
     ctx.moveTo(0, Y_FIELD);
-    ctx.lineTo((FIELD_SIZE * CELL_SIZE), Y_FIELD);
+    ctx.lineTo((NUM_LINES * CELL_SIZE), Y_FIELD);
 }
 ctx.stroke();
 
 ctx.beginPath();
-for (var X_FIELD = 0; X_FIELD < (FIELD_SIZE * CELL_SIZE); X_FIELD += CELL_SIZE) {
+for (var X_FIELD = 0; X_FIELD < (NUM_COLUMNS * CELL_SIZE); X_FIELD += CELL_SIZE) {
     ctx.moveTo(X_FIELD, 0);
-    ctx.lineTo(X_FIELD, (FIELD_SIZE * CELL_SIZE));
+    ctx.lineTo(X_FIELD, (NUM_COLUMNS * CELL_SIZE));
 }
 ctx.stroke();
 
@@ -56,42 +57,42 @@ canvas.onclick = function (event) {
 function count(row, col) {
     var neighbors = 0;
     if (row > 0 && col > 0) {
-        if (mas[row - 1][col - 1] == true) {
+        if (mas[row - 1][col - 1]) {
             neighbors++;
         }
     }
     if (col > 0) {
-        if (mas[row][col - 1] == true) {
+        if (mas[row][col - 1]) {
             neighbors++;
         }
     }
-    if (row != 49 && col > 0) {
-        if (mas[row + 1][col - 1] == true) {
+    if (row != (NUM_LINES - 1) && col > 0) {
+        if (mas[row + 1][col - 1]) {
             neighbors++;
         }
     }
     if (row > 0) {
-        if (mas[row - 1][col] == true) {
+        if (mas[row - 1][col]) {
             neighbors++;
         }
     }
-    if (row != 49) {
-        if (mas[row + 1][col] == true) {
+    if (row != (NUM_LINES - 1)) {
+        if (mas[row + 1][col]) {
             neighbors++;
         }
     }
-    if (row > 0 && col != 49) {
-        if (mas[row - 1][col + 1] == true) {
+    if (row > 0 && col != (NUM_COLUMNS - 1)) {
+        if (mas[row - 1][col + 1]) {
             neighbors++;
         }
     }
-    if (col != 49) {
-        if (mas[row][col + 1] == true) {
+    if (col != (NUM_COLUMNS - 1)) {
+        if (mas[row][col + 1]) {
             neighbors++;
         }
     }
-    if (row != 49 && col != 49) {
-        if (mas[row + 1][col + 1] == true) {
+    if (row != (NUM_LINES - 1) && col != (NUM_COLUMNS - 1)) {
+        if (mas[row + 1][col + 1]) {
             neighbors++;
         }
     }
@@ -142,4 +143,25 @@ pause.onclick = function () {
 
 step.onclick = function () {
     goLife();
+}
+
+clear.onclick = function () {
+    clearInterval(startGame);
+    mas = initMatrix(50, 50, (row, col) => {
+        drawCell(col, row, "white");
+        return false;
+    });
+    document.getElementById("start").disabled = false;
+}
+
+rand.onclick = function () {
+    mas = initMatrix(50, 50, (row, col) => {
+        let randBool = Math.random() > 0.5;
+        if (randBool) {
+            drawCell(col, row, "green");
+        } else {
+            drawCell(col, row, "white");
+        }
+        return randBool;
+    });
 }
