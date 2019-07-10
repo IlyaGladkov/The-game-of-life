@@ -8,7 +8,7 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
 ctx.strokeStyle = "black";
-ctx.strokeRect(0, 0, (NUM_COLUMNS * CELL_SIZE) + 0.5, (NUM_LINES * CELL_SIZE) + 0.5);
+ctx.strokeRect(0, 0, NUM_COLUMNS * CELL_SIZE, NUM_LINES * CELL_SIZE);
 
 ctx.beginPath();
 for (var Y_FIELD = 0; Y_FIELD < (NUM_LINES * CELL_SIZE); Y_FIELD += CELL_SIZE) {
@@ -29,11 +29,18 @@ function drawCell(col, row, color) {
     ctx.fillRect(col * CELL_SIZE + 1, row * CELL_SIZE + 1, CELL_SIZE - 1, CELL_SIZE - 1);
 }
 
+function clearMatrix(arr) {
+    arr.forEach(function (item, row) {
+        item.forEach(function (cell, col) {
+            arr[row][col] = false;
+            drawCell(col, row, "white");
+        })
+    })
+}
+
 var mas = initMatrix(50, 50, (row, col) => {
     let randBool = Math.random() > 0.5;
-    if (randBool) {
-        drawCell(col, row, "green");
-    }
+    drawCell(col, row, randBool ? "green" : "white");
     return randBool;
 });
 
@@ -147,21 +154,74 @@ step.onclick = function () {
 
 clear.onclick = function () {
     clearInterval(startGame);
-    mas = initMatrix(50, 50, (row, col) => {
-        drawCell(col, row, "white");
-        return false;
-    });
+    clearMatrix(mas);
     document.getElementById("start").disabled = false;
 }
 
 rand.onclick = function () {
     mas = initMatrix(50, 50, (row, col) => {
         let randBool = Math.random() > 0.5;
-        if (randBool) {
-            drawCell(col, row, "green");
-        } else {
-            drawCell(col, row, "white");
-        }
+        drawCell(col, row, randBool ? "green" : "white");
         return randBool;
     });
+}
+
+// figures 
+
+glider.onclick = function () {
+    clearMatrix(mas);
+    drawCell(47, 1, "green");
+    mas[1][47] = true;
+    drawCell(46, 2, "green");
+    mas[2][46] = true;
+    drawCell(46, 3, "green");
+    mas[3][46] = true;
+    drawCell(47, 3, "green");
+    mas[3][47] = true;
+    drawCell(48, 3, "green");
+    mas[3][48] = true;
+}
+
+toad.onclick = function () {
+    clearMatrix(mas);
+    drawCell(24, 19, "green");
+    mas[19][24] = true;
+    drawCell(25, 19, "green");
+    mas[19][25] = true;
+    drawCell(26, 19, "green");
+    mas[19][26] = true;
+    drawCell(23, 20, "green");
+    mas[20][23] = true;
+    drawCell(24, 20, "green");
+    mas[20][24] = true;
+    drawCell(25, 20, "green");
+    mas[20][25] = true;
+}
+
+pentaDec.onclick = function () {
+    clearMatrix(mas);
+    drawCell(20, 20, "green");
+    mas[20][20] = true;
+    drawCell(21, 20, "green");
+    mas[20][21] = true;
+    drawCell(22, 19, "green");
+    mas[19][22] = true;
+    drawCell(22, 21, "green");
+    mas[21][22] = true;
+    drawCell(23, 20, "green");
+    mas[20][23] = true;
+    drawCell(24, 20, "green");
+    mas[20][24] = true;
+    drawCell(25, 20, "green");
+    mas[20][25] = true;
+    drawCell(26, 20, "green");
+    mas[20][26] = true;
+    drawCell(27, 19, "green");
+    mas[19][27] = true;
+    drawCell(27, 21, "green");
+    mas[21][27] = true;
+    drawCell(28, 20, "green");
+    mas[20][28] = true;
+    drawCell(29, 20, "green");
+    mas[20][29] = true;
 }
