@@ -1,4 +1,5 @@
 import { initMatrix } from './matrix.js'
+import { neighbors, glider, toad, pentaDecathlon } from './relativeСoordinates.js'
 
 const NUM_LINES = 50;
 const NUM_COLUMNS = 50;
@@ -61,67 +62,38 @@ canvas.onclick = function (event) {
     }
 }
 
-function count(row, col) {
-    var neighbors = 0;
-    if (row > 0 && col > 0) {
-        if (mas[row - 1][col - 1]) {
-            neighbors++;
+let countNeighbors = (row, col) => {
+    let resNeighbors = 0;
+    neighbors.forEach((relCoordOfNeighbor) => {
+        let absRow = row + relCoordOfNeighbor.y;
+        let absCol = col + relCoordOfNeighbor.x;
+        if (absRow < NUM_LINES && absCol > 0) {
+            if (absRow > 0 && absCol < NUM_COLUMNS) {
+                if (mas[absRow][absCol]) {
+                    resNeighbors++;
+                }
+            }
         }
-    }
-    if (col > 0) {
-        if (mas[row][col - 1]) {
-            neighbors++;
-        }
-    }
-    if (row != (NUM_LINES - 1) && col > 0) {
-        if (mas[row + 1][col - 1]) {
-            neighbors++;
-        }
-    }
-    if (row > 0) {
-        if (mas[row - 1][col]) {
-            neighbors++;
-        }
-    }
-    if (row != (NUM_LINES - 1)) {
-        if (mas[row + 1][col]) {
-            neighbors++;
-        }
-    }
-    if (row > 0 && col != (NUM_COLUMNS - 1)) {
-        if (mas[row - 1][col + 1]) {
-            neighbors++;
-        }
-    }
-    if (col != (NUM_COLUMNS - 1)) {
-        if (mas[row][col + 1]) {
-            neighbors++;
-        }
-    }
-    if (row != (NUM_LINES - 1) && col != (NUM_COLUMNS - 1)) {
-        if (mas[row + 1][col + 1]) {
-            neighbors++;
-        }
-    }
-    return neighbors;
+    })
+    return resNeighbors;
 }
 
-var generation = 0;
+let generation = 0;
 
 function goLife() {
     mas.forEach(function (item, row) {
         item.forEach(function (cell, col) {
             mas2[row][col] = mas[row][col];
             if (mas[row][col] == false) {
-                if (count(row, col) == 3) {
+                if (countNeighbors(row, col) == 3) {
                     drawCell(col, row, "green");
                     mas2[row][col] = true;
                 }
             } else {
-                if (count(row, col) == 2) {
+                if (countNeighbors(row, col) == 2) {
                     mas2[row][col] = true;
                 }
-                if (count(row, col) < 2 || count(row, col) > 3) {
+                if (countNeighbors(row, col) < 2 || countNeighbors(row, col) > 3) {
                     drawCell(col, row, "white");
                     mas2[row][col] = false;
                 }
@@ -134,10 +106,10 @@ function goLife() {
             mas[row][col] = mas2[row][col]
         })
     })
-    document.getElementsByTagName("h3")[0].innerText = "Generation: " + generation;
+    document.getElementsByTagName("h2")[0].innerText = "Generation: " + generation;
 }
 
-var startGame;
+let startGame;
 start.onclick = function () {
     startGame = setInterval(goLife, 100);
     document.getElementById("start").disabled = true;
@@ -166,62 +138,28 @@ rand.onclick = function () {
     });
 }
 
-// figures 
+// figures
 
-glider.onclick = function () {
-    clearMatrix(mas);
-    drawCell(47, 1, "green");
-    mas[1][47] = true;
-    drawCell(46, 2, "green");
-    mas[2][46] = true;
-    drawCell(46, 3, "green");
-    mas[3][46] = true;
-    drawCell(47, 3, "green");
-    mas[3][47] = true;
-    drawCell(48, 3, "green");
-    mas[3][48] = true;
+function drawFigures(figures, changeX, changeY) {
+    figures.forEach(function (point) {
+        let absX = point.x + changeX;
+        let absY = point.y + changeY;
+        drawCell(absX, absY, "green");
+        mas[absY][absX] = true;
+    })
 }
 
-toad.onclick = function () {
+playGlider.onclick = function () {
     clearMatrix(mas);
-    drawCell(24, 19, "green");
-    mas[19][24] = true;
-    drawCell(25, 19, "green");
-    mas[19][25] = true;
-    drawCell(26, 19, "green");
-    mas[19][26] = true;
-    drawCell(23, 20, "green");
-    mas[20][23] = true;
-    drawCell(24, 20, "green");
-    mas[20][24] = true;
-    drawCell(25, 20, "green");
-    mas[20][25] = true;
+    drawFigures(glider, 46, 1);
 }
 
-pentaDec.onclick = function () {
+playToad.onclick = function () {
     clearMatrix(mas);
-    drawCell(20, 20, "green");
-    mas[20][20] = true;
-    drawCell(21, 20, "green");
-    mas[20][21] = true;
-    drawCell(22, 19, "green");
-    mas[19][22] = true;
-    drawCell(22, 21, "green");
-    mas[21][22] = true;
-    drawCell(23, 20, "green");
-    mas[20][23] = true;
-    drawCell(24, 20, "green");
-    mas[20][24] = true;
-    drawCell(25, 20, "green");
-    mas[20][25] = true;
-    drawCell(26, 20, "green");
-    mas[20][26] = true;
-    drawCell(27, 19, "green");
-    mas[19][27] = true;
-    drawCell(27, 21, "green");
-    mas[21][27] = true;
-    drawCell(28, 20, "green");
-    mas[20][28] = true;
-    drawCell(29, 20, "green");
-    mas[20][29] = true;
+    drawFigures(toad, 23, 19);
+}
+
+playPentaDec.onclick = function () {
+    clearMatrix(mas);
+    drawFigures(pentaDecathlon, 20, 19);
 }
