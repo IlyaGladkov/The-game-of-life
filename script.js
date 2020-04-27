@@ -128,6 +128,8 @@ clear.onclick = function () {
     clearInterval(startGame);
     clearMatrix(mas);
     document.getElementById("start").disabled = false;
+    generation = 0;
+    document.getElementsByTagName("h2")[0].innerText = "Generation: " + 0;
 }
 
 rand.onclick = function () {
@@ -163,3 +165,59 @@ playPentaDec.onclick = function () {
     clearMatrix(mas);
     drawFigures(pentaDecathlon, 20, 19);
 }
+
+function heightFigure(figure) {
+    let maxHeight = figure[0].y
+    for (let i = 0; i < figure.length; i++) {
+        if (maxHeight < figure[i].y) {
+            maxHeight = figure[i].y;
+        }
+    }
+    return maxHeight + 1;
+}
+
+function widthFigure(figure) {
+    let maxWidth = figure[0].x
+    for (let i = 0; i < figure.length; i++) {
+        if (maxWidth < figure[i].x) {
+            maxWidth = figure[i].x;
+        }
+    }
+    return maxWidth + 1;
+}
+
+function hasCell(pixel, figure) {
+    for (let livePixel of figure) {
+        if ((pixel.x == livePixel.x) && (pixel.y == livePixel.y)) {
+            return true
+        }
+    }
+    return false
+}
+
+function createPixels(figure) {
+    let blockFig = document.createElement('div')
+    blockFig.className = 'figure'
+    for (let h = 0; h < heightFigure(figure); h++) {
+        //CREATE LINE
+        let line = document.createElement('div')
+        line.className = 'line'
+        for (let w = 0; w < widthFigure(figure); w++) {
+            //CREATE PIXEL IN LINE
+            let pixel = document.createElement('div')
+            if (!hasCell({ x: w, y: h }, figure)) {
+                pixel.className = 'pixel dead'
+            } else {
+                pixel.className = 'pixel'
+            }
+            line.append(pixel)
+        }
+        blockFig.append(line)
+    }
+    return blockFig
+}
+
+let preview = document.getElementById('preview');
+preview.append(createPixels(glider));
+preview.append(createPixels(toad));
+preview.append(createPixels(pentaDecathlon));

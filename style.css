@@ -4,3 +4,27 @@ body {
     text-align: center;
     font-family: 'Squada One', cursive;
 }
+
+.line {
+    display: flex;
+}
+
+.pixel {
+    height: 10px;
+    width: 10px;
+    background-color: green;
+    border: 1px solid #D6D6D5;
+}
+
+.dead {
+    background-color: white;
+}
+
+#preview{
+    display: flex;
+    justify-content: center;
+}
+
+.figure {
+    margin: 5px;
+}
